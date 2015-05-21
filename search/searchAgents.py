@@ -336,9 +336,9 @@ class CornersProblem(search.SearchProblem):
             if not self.walls[nextx][nexty]:
                 nextState=(nextx,nexty)
                 if nextState in state[1]:
-                    tmpList = list(state[1])
-                    tmpList.remove(nextState)
-                    successors.append(((nextState,tuple(tmpList)), action, 1))
+                    tmpState = list(state[1])
+                    tmpState.remove(nextState)
+                    successors.append(((nextState,tuple(tmpState)), action, 1))
                 else:
                     successors.append(((nextState,state[1]), action, 1))
 
