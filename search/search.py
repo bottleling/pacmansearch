@@ -80,7 +80,7 @@ def search(problem, frontier):
         node = frontier.pop()
         explored.append(node.state)
         if problem.isGoalState(node.state):
-            return node
+            return node.getPath()
         for child in node.getChildren(problem):
             if not child.state in explored:
                 frontier.push(child)
@@ -97,6 +97,7 @@ def search2(problem, frontier):
                 if problem.isGoalState(position):
                     return actions + [direction]
                 frontier.push((position, actions+[direction], explored+[node]))
+                
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -114,14 +115,14 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     from util import Stack
     frontier=Stack()
-    return  search(problem, frontier).getPath()
+    return  search(problem, frontier)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     from util import Queue
     frontier=Queue()
-    return  search(problem, frontier).getPath()
+    return  search(problem, frontier)
 
 
 def isStateInHeap(heap, state):
@@ -150,7 +151,7 @@ def uniformCostSearch(problem):
             elif h > -1:
                 if (frontier.heap[h][2].path_cost > child.path_cost):
                     frontier.heap.pop(h)
-                    frontier.push(child)
+                    frontier.push(child, child.path_cost)
 
 def nullHeuristic(state, problem=None):
     """
@@ -173,9 +174,15 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if problem.isGoalState(node.state):
             return node.getPath()
         for child in node.getChildren(problem):
-            if not child.state in explored:
+            h = isStateInHeap(frontier.heap,child.state)
+            if not child.state in explored and h == -1:
                 evaluation_cost=child.path_cost+heuristic(child.state,problem)
                 frontier.push(child, evaluation_cost)
+            elif h > -1:
+                if (frontier.heap[h][2].path_cost > child.path_cost):
+                    frontier.heap.pop(h)
+                    frontier.push(child, child.path_cost)
+
 
 
 # Abbreviations
