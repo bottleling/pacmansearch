@@ -123,6 +123,13 @@ def breadthFirstSearch(problem):
     frontier=Queue()
     return  search(problem, frontier).getPath()
 
+
+def isStateInHeap(heap, state):
+    for i in range(0,len(heap)):
+        if heap[i][2].state == state:
+            return i
+    return -1
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
@@ -137,8 +144,13 @@ def uniformCostSearch(problem):
         if problem.isGoalState(node.state):
             return node.getPath()
         for child in node.getChildren(problem):
-            if not child.state in explored:
+            h = isStateInHeap(frontier.heap,child.state)
+            if not child.state in explored and h == -1:
                 frontier.push(child, child.path_cost)
+            elif h > -1:
+                if (frontier.heap[h][2].path_cost > child.path_cost):
+                    frontier.heap.pop(h)
+                    frontier.push(child)
 
 def nullHeuristic(state, problem=None):
     """
