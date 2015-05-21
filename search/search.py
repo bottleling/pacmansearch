@@ -18,7 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-
+import node
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -88,7 +88,6 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     print "Start:", problem.getStartState()
-    print "Goal:",problem.getGoalState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     util.raiseNotDefined()
