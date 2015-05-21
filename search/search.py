@@ -18,7 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-
+from node import Node
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -72,9 +72,23 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def search(problem,frontier):
+def search(problem, frontier):
+    start_node = Node(problem.getStartState(), step_cost=0)
+    explored = []
+    frontier.push(start_node)
+    while not frontier.isEmpty():
+        node = frontier.pop()
+        explored.append(node.state)
+        if problem.isGoalState(node.state):
+            return node
+        for child in node.getChildren(problem):
+            if not child.state in explored:
+                frontier.push(child)
+
+def search2(problem, frontier):
     explored=[]
     frontier.push((problem.getStartState(),[],[]))
+
     while not frontier.isEmpty():
         node, actions, explored=frontier.pop()
 
@@ -83,7 +97,6 @@ def search(problem,frontier):
                 if problem.isGoalState(position):
                     return actions + [direction]
                 frontier.push((position, actions+[direction], explored+[node]))
-
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -94,22 +107,21 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
-    print "Start:", problem.getStartState() (5, 5)
+    print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState()) [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-
     from util import Stack
     frontier=Stack()
-    return search(problem,frontier)
+    return  search(problem, frontier).getPath()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     from util import Queue
     frontier=Queue()
-    return search(problem,frontier)
+    return  search(problem, frontier).getPath()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
