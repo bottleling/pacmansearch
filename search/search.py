@@ -72,6 +72,18 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def search(problem,frontier):
+    explored=[]
+    frontier.push((problem.getStartState(),[],[]))
+    while not frontier.isEmpty():
+        node, actions, explored=frontier.pop()
+
+        for position, direction, cost in problem.getSuccessors(node):
+            if not position in explored:
+                if problem.isGoalState(position):
+                    return actions + [direction]
+                frontier.push((position, actions+[direction], explored+[node]))
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -89,38 +101,15 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
 
     from util import Stack
-
     frontier=Stack()
-    explored=[]
-    #push (state, action, explored into frontier)
-    frontier.push((problem.getStartState(),[],[]))
-
-    while not frontier.isEmpty():
-        node, actions, explored=frontier.pop()
-
-        for position, direction, cost in problem.getSuccessors(node):
-            if not position in explored:
-                if problem.isGoalState(position):
-                    return actions + [direction]
-                frontier.push((position, actions+[direction], explored+[node]))
+    return search(problem,frontier)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     from util import Queue
     frontier=Queue()
-    explored=[]
-    #push (state, action, explored into frontier)
-    frontier.push((problem.getStartState(),[],[]))
-
-    while not frontier.isEmpty():
-        node, actions, explored=frontier.pop()
-
-        for position, direction, cost in problem.getSuccessors(node):
-            if not position in explored:
-                if problem.isGoalState(position):
-                    return actions + [direction]
-                frontier.push((position, actions+[direction], explored+[node]))
+    return search(problem,frontier)
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
