@@ -18,7 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-import node
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
