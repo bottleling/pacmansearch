@@ -28,5 +28,5 @@ class Node:
 				path.append(current_node.action)
 			current_node = current_node.parent
 		list.reverse(path)
-		print path
+		#print path
 		return path
