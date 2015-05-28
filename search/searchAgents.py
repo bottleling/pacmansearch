@@ -510,7 +510,7 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actionIndex = 0
         print 'Path found with cost %d.' % len(self.actions)
 
-    def findPathToClosestDot(self, gameState):
+    def findPathToClosestDot(self, gameState): 
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
@@ -522,7 +522,11 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.aStarSearch(problem) 
+        #when astar expands a node, the path to the node is optimal. the first path that reaches a goal state is thus the shortest.
+        #any other path that reaches a goal state will be longer.
+        #anyfoodsearchproblem's goal is to reach one food
+        #when astar solves the anyfoodsearch problem, the outcome is an optimal path to one food node.
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -558,7 +562,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.food[x][y] #found the path to one food
 
 def mazeDistance(point1, point2, gameState):
     """
