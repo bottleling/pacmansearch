@@ -481,8 +481,17 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+    coords = foodGrid.asList()
+    if len(coords) == 0:
+        return 0
+    else:
+        distances = []
+        for i in range(0, len(coords)):
+            distances.append(mazeDistance(position,coords[i],problem.startingGameState))
+        return max(distances) #the longest optimal path to a food as computed by BFS
+
     "*** YOUR CODE HERE ***"
-    return 0
+    #return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
