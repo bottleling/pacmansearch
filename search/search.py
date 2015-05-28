@@ -72,31 +72,6 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def search(problem, frontier):
-    start_node = Node(problem.getStartState(), step_cost=0)
-    explored = []
-    frontier.push(start_node)
-    while not frontier.isEmpty():
-        node = frontier.pop()
-        explored.append(node.state)
-        if problem.isGoalState(node.state):
-            return node.getPath()
-        for child in node.getChildren(problem):
-            if not child.state in explored:
-                frontier.push(child)
-
-def search2(problem, frontier):
-    explored=[]
-    frontier.push((problem.getStartState(),[],[]))
-
-    while not frontier.isEmpty():
-        node, actions, explored=frontier.pop()
-
-        for position, direction, cost in problem.getSuccessors(node):
-            if not position in explored:
-                if problem.isGoalState(position):
-                    return actions + [direction]
-                frontier.push((position, actions+[direction], explored+[node]))
                 
 def depthFirstSearch(problem):
     """
@@ -115,15 +90,41 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     from util import Stack
     frontier=Stack()
-    return  search(problem, frontier)
+    start_node = Node(problem.getStartState(), step_cost=0)
+    explored = []
+    frontier.push(start_node)
+    while not frontier.isEmpty():
+        node = frontier.pop()
+        explored.append(node.state)
+        if problem.isGoalState(node.state):
+            return node.getPath()
+        for child in node.getChildren(problem):
+            if not child.state in explored:
+                frontier.push(child)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     from util import Queue
     frontier=Queue()
-    return  search(problem, frontier)
+    start_node = Node(problem.getStartState(), step_cost=0)
+    explored = []
+    frontier.push(start_node)
+    while not frontier.isEmpty():
+        node = frontier.pop()
+        explored.append(node.state)
+        if problem.isGoalState(node.state):
+            return node.getPath()
+        for child in node.getChildren(problem):
+            h = isStateInList(frontier.list,child.state)
+            if not child.state in explored and h == -1:
+                frontier.push(child)
 
+def isStateInList(queue,state):
+    for i in range(0,len(queue)):
+        if queue[i].state == state:
+            return i
+    return -1
 
 def isStateInHeap(heap, state):
     for i in range(0,len(heap)):
